@@ -1,28 +1,13 @@
-let game = ["", "", "", "", "", "", "", "", ""];
+const moan = new Audio("./audio/youWon.m4a");
+const playWithMe = new Audio("./audio/playWithMe.m4a");
+const yes = new Audio("./audio/yesYes.m4a");
+let ai = document.querySelector(".ai");
+let two = document.querySelector(".two-player");
 
-// addimg things to an array
-let boardDiv = document.querySelectorAll(".board-div");
-let turn = true;
-for (let i = 0; i < boardDiv.length; i++) {
-  boardDiv[i].addEventListener("click", () => {
-    if (game[i] === "") {
-      if (turn === true) {
-        game[i] = "x";
-        turn = false;
-      } else {
-        game[i] = "o";
-        turn = true;
-      }
-    }
-    makeMove();
-  });
-}
+ai.addEventListener("mouseover", () => {
+  playWithMe.play();
+});
 
-// display everything on the board
-function makeMove() {
-  for (let i = 0; i < game.length; i++) {
-    boardDiv[i].innerHTML = game[i];
-  }
-}
-
-function checkWin(game) {}
+ai.addEventListener("click", () => {
+  yes.play();
+});
