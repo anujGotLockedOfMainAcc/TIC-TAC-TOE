@@ -55,6 +55,11 @@ const gameBoard = (() => {
         makeMove();
         move.play();
         if (checkWin(player.symbol) || checkWin(ai.symbol)) {
+          if (checkWin(player.symbol)) {
+            wonPlayer.innerHTML = `PLAYER WON: ${player.symbol}}`;
+          } else if (checkWin(ai.symbol)) {
+            wonPlayer.innerHTML = `PLAYER WON: ${ai.symbol}`;
+          }
           setTimeout(resetBoard, 1500);
         }
         if (checkTie() && !checkWin()) {
@@ -284,14 +289,14 @@ let makePlayer = (name, symbol) => {
     turn,
   };
 };
+let ai = makePlayer("ai", "O");
+let player = makePlayer("player", "X");
 
 let page = document.body.id;
 if (page === "two") {
   gameBoard.playTwoPlayer();
 }
 if (page === "ai") {
-  let ai = makePlayer("ai", "O");
-  let player = makePlayer("player", "X");
   gameBoard.playAi(player, ai);
   console.log("playing againts ai");
 }
