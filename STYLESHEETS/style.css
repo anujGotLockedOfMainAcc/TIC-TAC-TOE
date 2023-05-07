@@ -174,6 +174,26 @@ body {
   margin-right: auto;
 }
 
+.choose {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.choose button {
+  margin-top: 7px;
+}
+
+button {
+  border: none;
+  border-radius: 14px;
+  background-color: skyblue;
+  padding: 2%;
+  padding-left: 15px;
+  padding-right: 15px;
+  cursor: pointer;
+}
+
 #head {
   font-size: 3.5rem;
 }

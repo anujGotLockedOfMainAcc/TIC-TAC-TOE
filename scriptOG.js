@@ -1,22 +1,28 @@
-/*
+// to select ai level
+// let medium = document.getElementById("medium");
+// let hard = document.getElementById("hard");
 
-1. add a player or ai page
-2. create a player object
-3. correct preexisting fucntions -> play(),add to makeMove()
-add new functions ->  checkTie(),
-4. create a basic ai
+// medium.addEventListener("click", () => {
+//   if (medium.style.backgroundColor === "rgb(209, 148, 224)") {
+//     medium.style.backgroundColor = "skyblue";
+//   } else {
+//     medium.style.backgroundColor = "rgb(209, 148, 224)";
+//   }
+// });
 
--> check if ai has wining move, make move
-or
--> if opponent has a winning move, make it
-or
-make any random move 
+// hard.addEventListener("click", () => {
+//   if (hard.style.backgroundColor === "rgb(209, 148, 224)") {
+//     hard.style.backgroundColor = "skyblue";
+//   } else {
+//     hard.style.backgroundColor = "rgb(209, 148, 224)";
+//   }
+// });
 
-5. create advance unbeatable ai - > using minimax()
- */
+// selctting sounds
+// let gameSound = new Audio("./audio/music.mp3");
+let gameOver = new Audio("./audio/gameover.mp3");
+let move = new Audio("./audio/Untitled.mov");
 
-//switch between ai and local player
-const moan = new Audio("./audio/youWon.m4a");
 // gameBoard module
 const gameBoard = (() => {
   // game array
@@ -34,6 +40,7 @@ const gameBoard = (() => {
   function playTwoPlayer() {
     for (let i = 0; i < boardDiv.length; i++) {
       boardDiv[i].addEventListener("click", () => {
+        move.play();
         if (game[i] === "") {
           if (turn === true) {
             turnFor.innerHTML = "Turn for O";
@@ -46,8 +53,8 @@ const gameBoard = (() => {
           }
         }
         makeMove();
-        if (checkWin()) {
-          moan.play();
+        move.play();
+        if (checkWin(player.symbol) || checkWin(ai.symbol)) {
           setTimeout(resetBoard, 1500);
         }
         if (checkTie() && !checkWin()) {
@@ -64,21 +71,29 @@ const gameBoard = (() => {
       boardDiv[i].addEventListener("click", () => {
         if (game[i] === "") {
           if (player.turn === true) {
+            move.play();
             turnFor.innerHTML = `Turn for ${player.symbol}`;
             game[i] = player.symbol;
             ai.turn = true;
             player.turn = false;
           }
           if (ai.turn === true) {
-            turnFor.innerHTML = `Turn for ${ai.symbol}`;
+            turnFor.innerHTML = `Turn for ${"O"}`;
             makeMoveAi(player, ai);
             ai.turn = false;
             player.turn = true;
           }
         }
         makeMove();
-        if (checkWin()) {
-          moan.play();
+
+        if (checkWin(player.symbol) || checkWin(ai.symbol)) {
+          if (checkWin(player.symbol)) {
+            wonPlayer.innerHTML = `PLAYER WON: ${player.symbol}}`;
+          } else if (checkWin(ai.symbol)) {
+            wonPlayer.innerHTML = `PLAYER WON: ${"AI"}`;
+          }
+          gameOver.play();
+          console.log("hi");
           setTimeout(resetBoard, 1500);
         }
         if (checkTie() && !checkWin()) {
@@ -98,48 +113,49 @@ const gameBoard = (() => {
   }
   // basic ai
   function makeMoveAi(player, ai) {
-    for (let i = 0; i < game.length; i++) {
-      // if ai wins
-      console.log("check ai move");
-      if (game[i] === "") {
-        game[i] = ai.symbol;
-        if (checkWin()) {
-          console.log("ai win move");
-          return;
-        }
-        game[i] = "";
-      }
-    }
+    let bestMove = getBestMove(player, ai);
+    game[bestMove] = ai.symbol;
+    // for (let i = 0; i < game.length; i++) {
+    //   // if ai wins
+    //   console.log("check ai move");
+    //   if (game[i] === "") {
+    //     game[i] = ai.symbol;
+    //     if (checkWin()) {
+    //       console.log("ai win move");
+    //       return;
+    //     }
+    //     game[i] = "";
+    //   }
+    // }
 
-    // if opp has a winning move
-    for (let i = 0; i < game.length; i++) {
-      console.log("check opp move");
-      if (game[i] === "") {
-        game[i] = player.symbol;
-        if (checkWin()) {
-          game[i] = ai.symbol;
-          return;
-        }
-        game[i] = "";
-      }
-    }
+    // // if opp has a winning move
+    // for (let i = 0; i < game.length; i++) {
+    //   console.log("check opp move");
+    //   if (game[i] === "") {
+    //     game[i] = player.symbol;
+    //     if (checkWin()) {
+    //       game[i] = ai.symbol;
+    //       return;
+    //     }
+    //     game[i] = "";
+    //   }
+    // }
 
-    // if no move play random
-    if (!game.includes("")) {
-      return;
-    }
-    // if no move play random
-    while (true) {
-      let r = Math.floor(Math.random() * 9);
-      if (game[r] === "") {
-        console.log("random move");
-        game[r] = ai.symbol;
-        return;
-      }
-    }
+    // // if no move play random
+    // if (!game.includes("")) {
+    //   return;
+    // }
+    // // if no move play random
+    // while (true) {
+    //   let r = Math.floor(Math.random() * 9);
+    //   if (game[r] === "") {
+    //     console.log("random move");
+    //     game[r] = ai.symbol;
+    //     return;
+    //   }
   }
 
-  function checkWin() {
+  function checkWin(symbol) {
     let win = [
       [0, 1, 2],
       [3, 4, 5],
@@ -154,9 +170,11 @@ const gameBoard = (() => {
     for (let i = 0; i < win.length; i++) {
       let [a, b, c] = win[i];
       if (game[a] === game[b] && game[b] === game[c] && game[a] !== "") {
-        wonPlayer.innerHTML = `player won ${game[a]}`;
-        // setTimeout(resetBoard, 1500);
-        return true;
+        if (game[a] === symbol) {
+          // wonPlayer.innerHTML = `player won ${game[a]}`;
+          // setTimeout(resetBoard, 1500);
+          return true;
+        }
       }
     }
     return false;
@@ -178,7 +196,74 @@ const gameBoard = (() => {
       });
       div.innerHTML = "";
     }
+    wonPlayer.innerHTML = "PLAYER WON: ";
   }
+
+  function scores(player, ai) {
+    if (checkWin(player.symbol)) {
+      return -10;
+    } else if (checkWin(ai.symbol)) {
+      return 10;
+    }
+    return 0;
+  }
+
+  function getBestMove(player, ai) {
+    let depth = 0;
+    let bestScore = -Infinity;
+    let bestMove;
+
+    for (let i = 0; i < game.length; i++) {
+      if (game[i] === "") {
+        game[i] = ai.symbol;
+        let score = minimax(player, ai, false, depth);
+        game[i] = "";
+        if (score > bestScore) {
+          bestScore = score;
+          bestMove = i;
+        }
+      }
+    }
+    // console.log(bestMove);
+
+    return bestMove;
+  }
+  function minimax(player, ai, isMaxi, depth) {
+    if (checkWin(ai.symbol)) {
+      return 10 - depth;
+    } else if (checkWin(player.symbol)) {
+      return depth - 10;
+    } else if (checkTie()) {
+      return 0;
+    }
+
+    if (isMaxi) {
+      let bestScore = -Infinity;
+      for (let i = 0; i < game.length; i++) {
+        if (game[i] === "") {
+          game[i] = ai.symbol;
+          let score = minimax(player, ai, false, depth + 1);
+          game[i] = "";
+          bestScore = Math.max(score, bestScore);
+        }
+      }
+      return bestScore;
+    } else {
+      let bestScore = Infinity;
+      for (let i = 0; i < game.length; i++) {
+        if (game[i] === "") {
+          game[i] = player.symbol;
+          let score = minimax(player, ai, true, depth + 1);
+          game[i] = "";
+          bestScore = Math.min(score, bestScore);
+        }
+      }
+      return bestScore;
+    }
+  }
+
+  /// unbeatable ai
+  function unbeatableAI() {}
 
   return {
     game,
@@ -207,7 +292,6 @@ if (page === "two") {
 if (page === "ai") {
   let ai = makePlayer("ai", "O");
   let player = makePlayer("player", "X");
-
   gameBoard.playAi(player, ai);
   console.log("playing againts ai");
 }
