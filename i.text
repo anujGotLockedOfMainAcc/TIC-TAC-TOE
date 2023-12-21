@@ -20,9 +20,25 @@
 let easy = document.getElementById("easy");
 let medium = document.getElementById("medium");
 let hard = document.getElementById("hard");
-let DEPTH = 2;
 
-// Rest of your code...
+easy.addEventListener("click", () => selectDifficulty("easy"));
+medium.addEventListener("click", () => selectDifficulty("medium"));
+hard.addEventListener("click", () => selectDifficulty("hard"));
+
+function selectDifficulty(difficulty) {
+  // Implement your logic to handle different difficulty levels
+  if (difficulty === "easy") {
+    // Handle Easy level
+  } else if (difficulty === "medium") {
+    // Handle Medium level
+  } else if (difficulty === "hard") {
+    // Handle Hard level
+  }
+}
+
+// selctting sounds
+let gameSound = new Audio("./audio/music.mp3");
+gameSound.play();
 let gameOver = new Audio("./audio/gameover.mp3");
 let move = new Audio("./audio/Untitled.mov");
 
@@ -63,11 +79,11 @@ const gameBoard = (() => {
           } else if (checkWin(ai.symbol)) {
             wonPlayer.innerHTML = `PLAYER WON: ${ai.symbol}`;
           }
-          setTimeout(resetBoard, 1500);
+          setTimeout(resetBoard, 1800);
         }
         if (checkTie() && !checkWin()) {
           wonPlayer.innerHTML = `TIE!!`;
-          setTimeout(resetBoard, 1500);
+          setTimeout(resetBoard, 1800);
         }
       });
     }
@@ -102,11 +118,11 @@ const gameBoard = (() => {
           }
           gameOver.play();
           console.log("hi");
-          setTimeout(resetBoard, 1500);
+          setTimeout(resetBoard, 1800);
         }
         if (checkTie() && !checkWin()) {
           wonPlayer.innerHTML = `TIE!!`;
-          setTimeout(resetBoard, 1500);
+          setTimeout(resetBoard, 1800);
         }
       });
     }

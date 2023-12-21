@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic Tac Toe Login</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        background-color: #cecdcc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      .login-container {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        width: 300px;
+        text-align: center;
+        padding: 20px;
+        animation: bounceIn 0.8s ease-in-out;
+      }
+
+      @keyframes bounceIn {
+        from {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      h2 {
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 24px;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      label {
+        font-size: 14px;
+        margin-bottom: 8px;
+        color: #555;
+      }
+
+      input {
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      button {
+        background-color: #ff5733;
+        color: #fff;
+        padding: 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease-in-out;
+      }
+
+      button:hover {
+        background-color: #e65100;
+      }
+
+      p {
+        margin-top: 15px;
+        color: #777;
+        font-size: 14px;
+      }
+
+      a {
+        color: #333;
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <h2>Let's Play Tic Tac Toe!</h2>
+      <form>
+        <label for="username">Your Nickname</label>
+        <input
+          type="text"
+          id="username"
+          placeholder="Enter your nickname"
+          required
+        />
+
+        <label for="password">Secret Password</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="Enter your secret password"
+          required
+        />
+
+        <button type="submit">Login</button>
+      </form>
+      <p>Don't have an account? <a href="#">Create one now</a></p>
+    </div>
+  </body>
+</html>
